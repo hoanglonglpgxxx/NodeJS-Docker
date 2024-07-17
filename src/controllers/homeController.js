@@ -15,11 +15,28 @@ const getSamplePage = (req, res) => {
         }
     );
 
+    res.send('test');
+};
 
-    res.send('AAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+const createUser = (req, res) => {
+    const { email, name, city } = req.body;
+    if (email.length && name.length && city.length) {
+        connection.query(
+            'INSERT INTO Users (email, name, city) VALUES (?, ?, ?)', [email, name, city]),
+            function (err, results) {
+                if (err) {
+                    console.log('Error: ', err);
+                    res.send('Internal server error');
+                }
+            };
+    } else {
+        res.send('Invalid input');
+
+    }
 };
 
 module.exports = {
     getHomePage,
-    getSamplePage
+    getSamplePage,
+    createUser
 };

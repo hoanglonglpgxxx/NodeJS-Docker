@@ -5,6 +5,9 @@ const dotenv = require('dotenv').config();
 const webRoutes = require('./routes/web');
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 //Serving static files
 app.set('views', path.join(__dirname + '/views'));
 app.set('view engine', 'ejs');
