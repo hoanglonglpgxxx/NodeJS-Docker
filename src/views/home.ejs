@@ -15,22 +15,30 @@
         <li><a href="#about">About</a></li>
       </ul>
     </div>
-    <% users.length === 0 ? 'No user found' : '' %>
+    <% if (users.length === 0) { %>
+    <p>No user found</p>
+    <% } else { %>
     <table class="table-container">
       <tr>
         <th>No.</th>
         <th>Name</th>
         <th>Email</th>
         <th>City</th>
+        <th>Actions</th>
       </tr>
-      <% users.forEach((user, index) => { %>
+      <% JSON.stringify(users);console.log(users); users.forEach((user, index) => { %>
       <tr>
-        <td><%= index + 1 %></td>
+        <td><%= user.id %></td>
         <td><%= user.name %></td>
         <td><%= user.email %></td>
         <td><%= user.city %></td>
+        <td>
+          <button>Delete</button>
+          <button>Edit</button>
+        </td>
       </tr>
       <% }) %>
     </table>
+    <% } %>
   </body>
 </html>
