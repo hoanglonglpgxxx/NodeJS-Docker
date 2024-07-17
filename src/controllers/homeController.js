@@ -1,6 +1,10 @@
 const connection = require('../config/db');
 
 const getHomePage = (req, res) => {
+    return res.render('home.ejs');
+};
+
+const getSamplePage = (req, res) => {
     let users = [];
     //test mysql connection
     connection.query(
@@ -13,10 +17,6 @@ const getHomePage = (req, res) => {
 
 
     res.send('AAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-};
-
-const getSamplePage = (req, res) => {
-    res.render('sample.ejs');
 };
 
 module.exports = {
