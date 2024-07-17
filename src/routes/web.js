@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const { getHomePage, getSamplePage } = require('../controllers/homeController');
 
-router.get('/', (req, res) => res.render('sample.ejs'));
+router.get('/', getHomePage);
+router.get('/qna', getSamplePage);
 
 module.exports = router;
