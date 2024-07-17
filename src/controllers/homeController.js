@@ -1,7 +1,13 @@
 const connection = require('../config/db');
 
-const getHomePage = (req, res) => {
-    return res.render('home.ejs');
+const getHomePage = async (req, res) => {
+    const [results, fields] = await connection.query(
+        `select * from Users u`
+    );
+    return res.render('home.ejs', {
+        title: 'Home',
+        users: resultsasdas
+    });
 };
 
 const getSamplePage = (req, res) => {
@@ -18,17 +24,23 @@ const getSamplePage = (req, res) => {
     res.send('test');
 };
 
-const createUser = (req, res) => {
+const getUserAddingPage = (req, res) => {
+    return res.render('user.ejs', {
+        title: 'Add User'
+    });
+};
+
+const createUser = async (req, res) => {
     const { email, name, city } = req.body;
     if (email.length && name.length && city.length) {
-        connection.query(
-            'INSERT INTO Users (email, name, city) VALUES (?, ?, ?)', [email, name, city]),
-            function (err, results) {
-                if (err) {
-                    console.log('Error: ', err);
-                    res.send('Internal server error');
-                }
-            };
+        let [results, fields] = await connection.query(
+            `INSERT INTO Users (email, name, city) VALUES (?, ?, ?)`, [email, name, city]
+        );
+        if (results.affectedRows === 1) {
+            return res.send('User created successfully');
+        } else {
+            return res.send('Failed to create user');
+        }
     } else {
         res.send('Invalid input');
 
@@ -38,5 +50,6 @@ const createUser = (req, res) => {
 module.exports = {
     getHomePage,
     getSamplePage,
-    createUser
+    createUser,
+    getUserAddingPage
 };

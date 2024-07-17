@@ -4,38 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Home</title>
+    <title><%= title %></title>
   </head>
   <body>
     <div class="topnav">
       <ul>
-        <li><a class="active" href="#home">Home</a></li>
-        <li><a href="#news">News</a></li>
+        <li><a class="active" href="/">Home</a></li>
+        <li><a href="/add-user">Add New User</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#about">About</a></li>
       </ul>
     </div>
-    <div id="form" class="form-add-new">
-      <form action="/create-user" method="POST">
-        <fieldset>
-          <legend>Thêm mới user</legend>
-          <div class="input-group">
-            <label for="email">Email: </label>
-            <input type="email" name="email" />
-          </div>
-          <div class="input-group">
-            <label for="name">Name: </label>
-            <input type="text" name="name" />
-          </div>
-          <div class="input-group">
-            <label for="city">City: </label>
-            <input type="text" name="city" />
-          </div>
-          <div class="submit-btn">
-            <button>Lưu</button>
-          </div>
-        </fieldset>
-      </form>
-    </div>
+    <% users.length === 0 ? 'No user found' : '' %>
+    <table class="table-container">
+      <tr>
+        <th>No.</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>City</th>
+      </tr>
+      <% users.forEach((user, index) => { %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.city %></td>
+      </tr>
+      <% }) %>
+    </table>
   </body>
 </html>
