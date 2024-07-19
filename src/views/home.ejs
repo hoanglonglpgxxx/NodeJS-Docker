@@ -33,12 +33,27 @@
         <td><%= user.email %></td>
         <td><%= user.city %></td>
         <td>
-          <a class="action-btn edit-btn" href="/update/<%= user.id %>">Edit</button>
-          <a class="action-btn delete-btn" href="/update/<%= user.id %>">Delete</button>
+          <a class="action-btn edit-btn" href="/update/<%= user.id %>">Edit</a>
+          <a class="action-btn delete-btn" href="/delete-user/<%= user.id %>">Delete</a>
         </td>
       </tr>
       <% }) %>
     </table>
     <% } %>
+    <script>
+      const trashBtns = document.querySelectorAll(".delete-btn");
+      trashBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const userId = e.target.getAttribute("href").split("/").pop();
+          const isDelete = confirm("Are you sure you want to delete this user?");
+          if (isDelete) {
+            fetch(`/delete-user/${userId}`, {
+              method: "DELETE",
+            });
+          }
+        });
+      });
+    </script>
   </body>
 </html>

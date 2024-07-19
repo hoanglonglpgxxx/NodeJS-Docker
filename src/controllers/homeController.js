@@ -29,6 +29,36 @@ const getUserAddingPage = (req, res) => {
     });
 };
 
+const deleteUser = async (req, res) => {
+    const userId = req.params.userId;
+    if (userId) {
+        getUserById(userId).then(async (user) => {
+            console.log(user);
+            if (!user || user.length === 0) {
+                return res.render('404.ejs', {
+                    title: '404'
+                });
+            }
+            connection.query(
+                'DELETE FROM Users WHERE id = ?', [userId],
+                function (err, results, fields) {
+                    if (err) {
+                        return res.send('Failed to delete user');
+                    }
+                    return res.redirect('/');
+                }
+            );
+            return res.redirect('/');
+
+        });
+    } else {
+        return res.render('404.ejs', {
+            title: '404'
+        });
+    }
+
+};
+
 const createUser = async (req, res) => {
     const { email, name, city, userId } = req.body;
     if (email.length && name.length && city.length) {
@@ -84,5 +114,6 @@ module.exports = {
     getSamplePage,
     createUser,
     getUpdatePage,
+    deleteUser,
     getUserAddingPage
 };
