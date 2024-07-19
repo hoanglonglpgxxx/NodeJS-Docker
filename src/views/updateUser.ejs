@@ -17,13 +17,14 @@
       <form action="/create-user" method="POST">
         <fieldset>
           <legend><%= formTitle %></legend>
-          <div class="input-group">
-            <label for="email">Email: </label>
-            <input type="email" name="email" value="<%= user.email %>" />
-          </div>
+          <input type="hidden" name="userId" value="<%= user.id %>" />
           <div class="input-group">
             <label for="name">Name: </label>
             <input type="text" name="name" value="<%= user.name %>" />
+          </div>
+          <div class="input-group">
+            <label for="email">Email: </label>
+            <input type="email" name="email" value="<%= user.email %>" />
           </div>
           <div class="input-group">
             <label for="city">City: </label>

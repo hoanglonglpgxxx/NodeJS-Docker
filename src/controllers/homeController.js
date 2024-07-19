@@ -1,5 +1,5 @@
 const connection = require('../config/db');
-const { getAllUsers, getUserById } = require('../services/CRUDservices');
+const { getAllUsers, getUserById, createNewUser, updateUserById } = require('../services/CRUDservices');
 
 const getHomePage = async (req, res) => {
     let results = await getAllUsers();
@@ -24,21 +24,32 @@ const getSamplePage = (req, res) => {
 };
 
 const getUserAddingPage = (req, res) => {
-    return res.render('user.ejs', {
+    return res.render('createUser.ejs', {
         title: 'Add User'
     });
 };
 
 const createUser = async (req, res) => {
-    const { email, name, city } = req.body;
+    const { email, name, city, userId } = req.body;
     if (email.length && name.length && city.length) {
-        let [results, fields] = await connection.query(
-            `INSERT INTO Users (email, name, city) VALUES (?, ?, ?)`, [email, name, city]
-        );
-        if (results.affectedRows === 1) {
-            return res.send('User created successfully');
+        if (userId) {
+            getUserById(req.body.userId).then(async (user) => {
+                if (user.length === 0) {
+                    return res.render('404.ejs', {
+                        title: '404'
+                    });
+                }
+                updateUserById(email, name, city, userId);
+                return res.redirect('/');
+            });
         } else {
-            return res.send('Failed to create user');
+            createNewUser(email, name, city).then(async (results) => {
+                if (results.affectedRows === 1) {
+                    return res.redirect('/');
+                } else {
+                    return res.send('Failed to create user');
+                }
+            });
         }
     } else {
         res.send('Invalid input');
