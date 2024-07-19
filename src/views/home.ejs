@@ -26,15 +26,15 @@
         <th>City</th>
         <th>Actions</th>
       </tr>
-      <% JSON.stringify(users);console.log(users); users.forEach((user, index) => { %>
+      <% JSON.stringify(users); users.forEach((user, index) => { %>
       <tr>
         <td><%= user.id %></td>
         <td><%= user.name %></td>
         <td><%= user.email %></td>
         <td><%= user.city %></td>
         <td>
-          <button>Delete</button>
-          <button>Edit</button>
+          <a class="action-btn edit-btn" href="/update/<%= user.id %>">Edit</button>
+          <a class="action-btn delete-btn" href="/update/<%= user.id %>">Delete</button>
         </td>
       </tr>
       <% }) %>

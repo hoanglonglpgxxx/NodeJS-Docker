@@ -65,3 +65,11 @@ td {
 tr:hover {
   background-color: coral;
 }
+
+.action-btn {
+  cursor: pointer;
+  text-decoration: none;
+  padding: 8px;
+  border: 1px solid cyan;
+  margin: 0 5px;
+}

@@ -1,5 +1,5 @@
 const connection = require('../config/db');
-const { getAllUsers } = require('../services/CRUDservices');
+const { getAllUsers, getUserById } = require('../services/CRUDservices');
 
 const getHomePage = async (req, res) => {
     let results = await getAllUsers();
@@ -46,9 +46,32 @@ const createUser = async (req, res) => {
     }
 };
 
+const getUpdatePage = (req, res) => {
+    const userId = req.params.userId;
+    if (userId) {
+        getUserById(userId).then((user) => {
+            if (user.length === 0) {
+                return res.render('404.ejs', {
+                    title: '404'
+                });
+            }
+            return res.render('updateUser.ejs', {
+                title: 'Update user',
+                formTitle: `Update user ${user.name}`,
+                user
+            });
+        });
+    } else {
+        return res.render('404.ejs', {
+            title: '404'
+        });
+    }
+};
+
 module.exports = {
     getHomePage,
     getSamplePage,
     createUser,
+    getUpdatePage,
     getUserAddingPage
 };
