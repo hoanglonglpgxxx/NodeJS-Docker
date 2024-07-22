@@ -1,5 +1,5 @@
 const connection = require('../config/db');
-const { getAllUsers, getUserById, createNewUser, updateUserById } = require('../services/CRUDservices');
+const { getAllUsers, getUserById, createNewUser, updateUserById, deleteUserById } = require('../services/CRUDservices');
 
 const getHomePage = async (req, res) => {
     let results = await getAllUsers();
@@ -32,31 +32,29 @@ const getUserAddingPage = (req, res) => {
 const deleteUser = async (req, res) => {
     const userId = req.params.userId;
     if (userId) {
-        getUserById(userId).then(async (user) => {
+        try {
+            const user = await getUserById(userId);
             console.log(user);
             if (!user || user.length === 0) {
                 return res.render('404.ejs', {
                     title: '404'
                 });
             }
-            connection.query(
-                'DELETE FROM Users WHERE id = ?', [userId],
-                function (err, results, fields) {
-                    if (err) {
-                        return res.send('Failed to delete user');
-                    }
-                    return res.redirect('/');
-                }
-            );
-            return res.redirect('/');
-
-        });
+            await deleteUserById(userId);
+            return res.status(200).json({
+                message: 'User deleted successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            return res.render('500.ejs', { // Assuming there's a 500 error page
+                title: 'Error'
+            });
+        }
     } else {
         return res.render('404.ejs', {
             title: '404'
         });
     }
-
 };
 
 const createUser = async (req, res) => {
